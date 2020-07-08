@@ -37,6 +37,7 @@ function displayOptions(){
             exitApp();
         }
     })
+    displayOptions();
 }
 function addManager(){
     inquirer.prompt([
@@ -64,6 +65,65 @@ function addManager(){
         var myManager = new Manager(response.name, response.id, response.email, response.officeNumber)
         managerList.push(myManager);
         console.log(managerList)
+        displayOptions();
+    })
+
+}
+function addIntern(){
+    inquirer.prompt([
+        {
+            type:"input",
+            message:"enter Name",
+            name:"name"
+        },
+        {
+            type:"input",
+            message:"enter Id",
+            name:"id"
+        },
+        {
+            type:"input",
+            message:"enter Email",
+            name:"email"
+        },
+        {
+            type:"input",
+            message:"enter school",
+            name:"school"
+        }
+    ]).then(function(response){
+        var myIntern = new intern(response.name, response.id, response.email, response.school)
+        internList.push(myIntern);
+        console.log(internList)
+        displayOptions();
+    })
+}
+function addEngineer(){
+    inquirer.prompt([
+        {
+            type:"input",
+            message:"enter Name",
+            name:"name"
+        },
+        {
+            type:"input",
+            message:"enter Id",
+            name:"id"
+        },
+        {
+            type:"input",
+            message:"enter Email",
+            name:"email"
+        },
+        {
+            type:"input",
+            message:"enter github",
+            name:"github"
+        }
+    ]).then(function(response){
+        var myEngineer = new Engineer(response.name, response.id, response.email, response.school)
+        egineerList.push(myEngineer);
+        console.log(engineerList)
         displayOptions();
     })
 
@@ -114,14 +174,45 @@ for (var i=0; i<managerList.length; i++){
             <li class="list-group-item">Office number: ${managerList[i].officeNumber}</li>
         </ul>
     </div>
-</div>
-`
+</div>`
 }
-let HTML = frontHTML + managerHTML + closingHTML;
+let internHTML = "";
+for (var i=0; i<internList.length; i++){
+    internHTML += `<div class="card employee-card">
+    <div class="card-header">
+        <h2 class="card-title">${internList[i].name}</h2>
+        <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>{{ role }}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${internList[i].id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${internList[i].email}">${internList[i].email}</a></li>
+            <li class="list-group-item">School: ${internList[i].school}</li>
+        </ul>
+    </div>
+</div>`
+let engineerHTML = "";
+for (var i=0; i<engineerList.length; i++){
+    engineerHTML += `<div class="card employee-card">
+    <div class="card-header">
+        <h2 class="card-title">${engineerList[i].name}</h2>
+        <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>{{ role }}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${engineerList[i].id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${engineerList[i].email}">${engineerList[i].email}</a></li>
+            <li class="list-group-item">GitHub: <a href="https://github.com/${engineerList[i].github}" target="_blank" rel="noopener noreferrer">{{ github }}</a></li>
+        </ul>
+    </div>
+</div>`
+}
+let HTML = frontHTML + managerHTML + internHTML + engineerHTML + closingHTML;
 fs.writeFileSync("./index.html", HTML, function(){
     console.log("file generated");
     process.exit(0)
-})
+        }       )
+    }
 }
 
 // Write code to use inquirer to gather information about the development team members,
